@@ -13,7 +13,7 @@ public class DAO_PhieuDatBan extends BaseDAO {
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	public void deletePhieuDatBanByMaBan(String maBan) throws SQLException {
-	    String query = "DELETE FROM PhieuDatBan WHERE MaBan = ?";
+	    String query = "{call sp_XoaPhieuDatTheoBan(?)}";
 	    try (Connection conn = new BaseDAO().getConnection();
 	         PreparedStatement ps = conn.prepareStatement(query)) {
 	        ps.setString(1, maBan);
@@ -123,4 +123,5 @@ public class DAO_PhieuDatBan extends BaseDAO {
 			}
 		}
 	}
+
 }

@@ -21,7 +21,7 @@ import entity.PhieuDatBan;
 import entity.CTPhieuDatBan;
 
 
-public class panelPhieuDatBan extends JPanel {
+public class panelPhieuDatBanTang3 extends JPanel {
     private static final long serialVersionUID = 1L;
     private JTextField txtMaKhachHang;
     private JTextField txtTenKhachHang;
@@ -50,7 +50,7 @@ public class panelPhieuDatBan extends JPanel {
         void onCustomerSelected(String maPDB);
     }
 
-    public panelPhieuDatBan() {
+    public panelPhieuDatBanTang3() {
         setBackground(Color.WHITE);
         setLayout(null);
         ban_DAO = new DAO_Ban();
@@ -203,8 +203,8 @@ public class panelPhieuDatBan extends JPanel {
 
             try {
                 int soLuongKhach = Integer.parseInt(soLuong);
-                if (soLuongKhach < 1 || soLuongKhach > 4) {
-                    JOptionPane.showMessageDialog(this, "Số lượng khách tối đa 4 người", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                if (soLuongKhach < 1 || soLuongKhach > 12) {
+                    JOptionPane.showMessageDialog(this, "Số lượng khách tối đa 12 người", "Lỗi", JOptionPane.WARNING_MESSAGE);
                     txtSoLuong.requestFocusInWindow();
                     return;
                 }

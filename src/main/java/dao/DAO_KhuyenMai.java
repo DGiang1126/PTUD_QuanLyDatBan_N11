@@ -51,9 +51,9 @@ public class DAO_KhuyenMai extends BaseDAO {
         return list;
     }
     private boolean isValidMaKM(String maKM) {
-        if (maKM == null || !maKM.matches("^KM\\d{2}$")) {
+        if (maKM == null || !maKM.matches("^KM\\d{3}$")) {
             JOptionPane.showMessageDialog(null, 
-                "Invalid MaKM format: " + maKM + ". Mã Khuyến mãi phải có cấu trúc KMXX (X là số).",
+                "Invalid MaKM format: " + maKM + ". Mã Khuyến mãi phải có cấu trúc KMXXX (X là số).",
                 "Lỗi định dạng", 
                 JOptionPane.ERROR_MESSAGE);
             return false;

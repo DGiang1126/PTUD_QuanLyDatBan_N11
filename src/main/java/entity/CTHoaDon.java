@@ -5,14 +5,16 @@ public class CTHoaDon {
     private String maMonAn;
     private int soLuong;
     private double donGia;
-    public CTHoaDon() {
-    	
-    }
-    public CTHoaDon(String maHoaDon, String maMonAn, int soLuong, double donGia) {
-    	this.maHoaDon = maHoaDon;
-    	this.maMonAn = maMonAn;
-    	this.soLuong = soLuong;
-    	this.donGia = donGia;
+    private double thanhTien; // Thêm từ sp_GetChiTietHoaDonByMaHD
+
+    public CTHoaDon() {}
+
+    public CTHoaDon(String maHoaDon, String maMonAn, int soLuong, double donGia, double thanhTien) {
+        this.maHoaDon = maHoaDon;
+        this.maMonAn = maMonAn;
+        this.soLuong = soLuong;
+        this.donGia = donGia;
+        this.setThanhTien(thanhTien);
     }
 
 	public String getMaHoaDon() {
@@ -38,6 +40,14 @@ public class CTHoaDon {
 	}
 	public void setDonGia(double donGia) {
 		this.donGia = donGia;
+	}
+
+	public double getThanhTien() {
+		return thanhTien;
+	}
+
+	public void setThanhTien(double thanhTien) {
+		this.thanhTien = thanhTien;
 	}
     
 }

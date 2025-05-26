@@ -31,7 +31,7 @@ public class homeAll extends JFrame {
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private DAO_NhanVien nhanVien;
 	private String maNV;
-	public homeAll(Main loginFrame, String maNV) {
+	public homeAll(Main loginFrame, String maNV) throws Exception {
 		setUndecorated(true);
 		getContentPane().setBackground(new Color(255, 255, 255));
 		
@@ -51,7 +51,7 @@ public class homeAll extends JFrame {
 			DrawerNV.showWelcomeMessage(NV.getTenNV().toString().trim());
 			Drawer.getInstance().setDrawerBuilder(DrawerNV);
 		} else {
-			DrawerQL DrawerQL = new DrawerQL(this, loginFrame);
+			DrawerQL DrawerQL = new DrawerQL(this, loginFrame, maNV);
 			DrawerQL.showWelcomeMessage(NV.getTenNV().toString().trim());
 			Drawer.getInstance().setDrawerBuilder(DrawerQL);
 		}
@@ -77,9 +77,15 @@ public class homeAll extends JFrame {
 		// Khởi tạo VLCJ media player
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	}
-	public String getNamebyID() {
+	public String getNamebyID() throws Exception {
 		nhanVien = new DAO_NhanVien();
-		NhanVien nv = nhanVien.getNVbyID(this.maNV);
+		NhanVien nv = null;
+		try {
+			nv = nhanVien.getNVbyID(this.maNV);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return nv.getTenNV().toString().trim();
 	}
 	// Phương thức để phát video
@@ -121,9 +127,17 @@ public class homeAll extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Main loginFrame = new Main();
-            homeAll frame = new homeAll(loginFrame, "NV001");
+            homeAll frame = null;
+			try {
+				frame = new homeAll(loginFrame, "NV001");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             frame.setVisible(true); // Hiển thị JFrame sau khi constructor hoàn tất
             frame.playVideo("video/2424767-uhd_3840_2160_24fps.mp4"); // Thay bằng đường dẫn video của bạn
         });
     }
+	
+
 }

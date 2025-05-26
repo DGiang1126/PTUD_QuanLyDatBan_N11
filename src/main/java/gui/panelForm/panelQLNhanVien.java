@@ -60,7 +60,7 @@ public class panelQLNhanVien extends JPanel {
     private JComboBox<String> comboBoxGioiTinh;
     private JComboBox<String> comboBoxChucVu;
 
-    public panelQLNhanVien() {
+    public panelQLNhanVien() throws Exception {
         setBackground(SystemColor.controlHighlight);
         setLayout(null);
         setSize(1535, 850);
@@ -196,9 +196,14 @@ public class panelQLNhanVien extends JPanel {
         loadDataToTable();
 
         btnAdd.addActionListener(e -> {
-            if (addNhanVien()) {
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            }
+            try {
+				if (addNhanVien()) {
+				    JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         });
         btnUpdate.addActionListener(e -> {
             if (showConfirmation("Bạn có muốn cập nhật nhân viên này không?")) {
@@ -207,7 +212,12 @@ public class panelQLNhanVien extends JPanel {
         });
         btnDelete.addActionListener(e -> {
             if (showConfirmation("Bạn có muốn xóa nhân viên này không?")) {
-                deleteNhanVien();
+                try {
+					deleteNhanVien();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
         btnChooseImage.addActionListener(e -> chooseImage());
@@ -218,7 +228,7 @@ public class panelQLNhanVien extends JPanel {
         return option == JOptionPane.YES_OPTION;
     }
 
-    private void loadDataToTable() {
+    private void loadDataToTable() throws Exception {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
 
@@ -316,7 +326,7 @@ public class panelQLNhanVien extends JPanel {
         }
     }
 
-    private boolean addNhanVien() {
+    private boolean addNhanVien() throws Exception {
         try {
             NhanVien nv = new NhanVien();
             nv.setMaNV(textField.getText().trim());
@@ -383,7 +393,7 @@ public class panelQLNhanVien extends JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi khi sửa nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private void deleteNhanVien() {
+    private void deleteNhanVien() throws Exception {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
             String maNV = table.getValueAt(selectedRow, 1).toString();

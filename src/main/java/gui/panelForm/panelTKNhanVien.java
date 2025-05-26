@@ -78,7 +78,7 @@ public class panelTKNhanVien extends JPanel {
 	private AbstractButton btnUpdate;
 	private AbstractButton btnAdd;
 
-    public panelTKNhanVien() {
+    public panelTKNhanVien() throws Exception {
         setBackground(SystemColor.controlHighlight);
         setLayout(null); // Sử dụng null layout để thiết lập bounds tuyệt đối
         setSize(1535, 850);
@@ -87,7 +87,6 @@ public class panelTKNhanVien extends JPanel {
         FlatLaf.registerCustomDefaultsSource("themes");
         FlatIntelliJLaf.setup();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-
 
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelTop.setBackground(SystemColor.controlHighlight);
@@ -108,7 +107,12 @@ public class panelTKNhanVien extends JPanel {
         btnTimKiem.setForeground(Color.WHITE);
         btnTimKiem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                filterAndShowDetails();
+                try {
+					filterAndShowDetails();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
         panelTop.add(btnTimKiem);
@@ -206,11 +210,23 @@ public class panelTKNhanVien extends JPanel {
         table.setAutoCreateRowSorter(false);
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                if (table.getSelectedRow() != -1 && isPanelThongTinVisible) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1 && selectedRow < table.getRowCount()) {
+                    // Hiển thị panelThongTin khi chọn một hàng
+                    panelThongTin.setVisible(true);
+                    isPanelThongTinVisible = true;
+                    panelThongTin.setBounds(panelThongTinBounds);
+                    scrollPane.setBounds(expandedScrollPaneBounds);
                     updateTextFieldsFromSelectedRow();
                 } else {
+                    // Ẩn panelThongTin nếu không có hàng nào được chọn
+                    panelThongTin.setVisible(false);
+                    isPanelThongTinVisible = false;
+                    scrollPane.setBounds(initialScrollPaneBounds);
                     clearForm();
                 }
+                revalidate();
+                repaint();
             }
         });
 
@@ -218,7 +234,6 @@ public class panelTKNhanVien extends JPanel {
         scrollPane.setBounds(initialScrollPaneBounds); // Thiết lập kích thước ban đầu
         add(scrollPane);
         initialScrollPaneBounds = scrollPane.getBounds(); // Lưu lại kích thước ban đầu
-
 
         btnAdd = new JButton("Thêm");
         btnUpdate = new JButton("Cập Nhật");
@@ -234,12 +249,10 @@ public class panelTKNhanVien extends JPanel {
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setBackground(Color.RED);
 
-
         // Thêm các nút vào panelThongTin
         panelThongTin.add(btnAdd);
         panelThongTin.add(btnUpdate);
         panelThongTin.add(btnDelete);
-
 
         btnAdd.addActionListener(e -> {
             panelThongTin.setVisible(true);
@@ -248,11 +261,12 @@ public class panelTKNhanVien extends JPanel {
             revalidate();
             repaint();
             if (showConfirmation("Bạn có muốn thêm nhân viên này không?")) {
-            	scrollPane.setBounds(initialScrollPaneBounds);
-                if (validateInput()) {
-                    addNhanVien();
-                    clearForm();
-                    
+                if (validateInput() && addNhanVien()) {
+                    scrollPane.setBounds(initialScrollPaneBounds);
+                    panelThongTin.setVisible(false);
+                    isPanelThongTinVisible = false;
+                    revalidate();
+                    repaint();
                 }
             }
         });
@@ -265,13 +279,16 @@ public class panelTKNhanVien extends JPanel {
             panelThongTin.setVisible(true);
             isPanelThongTinVisible = true;
             panelThongTin.setBounds(panelThongTinBounds);
-
             revalidate();
             repaint();
             if (showConfirmation("Bạn có muốn cập nhật nhân viên này không?")) {
-                scrollPane.setBounds(initialScrollPaneBounds);
                 if (validateInput()) {
                     updateNhanVien();
+                    scrollPane.setBounds(initialScrollPaneBounds);
+                    panelThongTin.setVisible(false);
+                    isPanelThongTinVisible = false;
+                    revalidate();
+                    repaint();
                 }
             }
         });
@@ -284,7 +301,12 @@ public class panelTKNhanVien extends JPanel {
             }
             if (showConfirmation("Bạn có muốn xóa nhân viên này không?")) {
                 scrollPane.setBounds(initialScrollPaneBounds);
-                deleteNhanVien();
+                try {
+					deleteNhanVien();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
                 panelThongTin.setVisible(false);
                 isPanelThongTinVisible = false;
                 revalidate();
@@ -300,10 +322,9 @@ public class panelTKNhanVien extends JPanel {
         btnChooseImage.addActionListener(e -> chooseImage());
 
         loadDataToTable();
-
     }
 
-    private void filterAndShowDetails() {
+    private void filterAndShowDetails() throws Exception {
         String text = txtTimKiem.getText().trim();
         tableModel.setRowCount(0); // Xóa dữ liệu cũ trong bảng
 
@@ -375,7 +396,7 @@ public class panelTKNhanVien extends JPanel {
         return option == JOptionPane.YES_OPTION;
     }
 
-    private void loadDataToTable() {
+    private void loadDataToTable() throws Exception {
         tableModel.setRowCount(0);
 
         List<NhanVien> listNV = DAONV.getAllNhanVien();
@@ -428,16 +449,16 @@ public class panelTKNhanVien extends JPanel {
 
     private void updateTextFieldsFromSelectedRow() {
         int selectedRow = table.getSelectedRow();
-        if (selectedRow >= 0) {
-            textField.setText(table.getValueAt(selectedRow, 1).toString());
-            textField_1.setText(table.getValueAt(selectedRow, 2).toString());
-            textField_2.setText(table.getValueAt(selectedRow, 3).toString());
-            comboBoxGioiTinh.setSelectedItem(table.getValueAt(selectedRow, 4).toString());
-            comboBoxChucVu.setSelectedItem(table.getValueAt(selectedRow, 5).toString());
-            textField_5.setText(table.getValueAt(selectedRow, 6).toString());
-            textField_6.setText(table.getValueAt(selectedRow, 7).toString());
-            textField_7.setText(table.getValueAt(selectedRow, 8).toString());
-            textField_8.setText(table.getValueAt(selectedRow, 9).toString());
+        if (selectedRow >= 0 && selectedRow < table.getRowCount()) {
+            textField.setText(table.getValueAt(selectedRow, 1) != null ? table.getValueAt(selectedRow, 1).toString() : "");
+            textField_1.setText(table.getValueAt(selectedRow, 2) != null ? table.getValueAt(selectedRow, 2).toString() : "");
+            textField_2.setText(table.getValueAt(selectedRow, 3) != null ? table.getValueAt(selectedRow, 3).toString() : "");
+            comboBoxGioiTinh.setSelectedItem(table.getValueAt(selectedRow, 4) != null ? table.getValueAt(selectedRow, 4).toString() : "");
+            comboBoxChucVu.setSelectedItem(table.getValueAt(selectedRow, 5) != null ? table.getValueAt(selectedRow, 5).toString() : "");
+            textField_5.setText(table.getValueAt(selectedRow, 6) != null ? table.getValueAt(selectedRow, 6).toString() : "");
+            textField_6.setText(table.getValueAt(selectedRow, 7) != null ? table.getValueAt(selectedRow, 7).toString() : "");
+            textField_7.setText(table.getValueAt(selectedRow, 8) != null ? table.getValueAt(selectedRow, 8).toString() : "");
+            textField_8.setText(table.getValueAt(selectedRow, 9) != null ? table.getValueAt(selectedRow, 9).toString() : "");
 
             ImageIcon icon = (ImageIcon) table.getValueAt(selectedRow, 0);
             selectedImagePath = null;
@@ -473,7 +494,6 @@ public class panelTKNhanVien extends JPanel {
             clearForm();
             panelThongTin.setVisible(false);
             isPanelThongTinVisible = false;
-            // scrollPane.setBounds(initialScrollPaneBounds); // Không cần thay đổi scrollPane bounds nữa
             revalidate();
             repaint();
         }
@@ -553,7 +573,8 @@ public class panelTKNhanVien extends JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi khi sửa nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private void deleteNhanVien() {
+
+    private void deleteNhanVien() throws Exception {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
             String maNV = table.getValueAt(selectedRow, 1).toString();
@@ -583,6 +604,7 @@ public class panelTKNhanVien extends JPanel {
         lblNewLabel_1.setIcon(null);
         selectedImagePath = null;
     }
+
     private boolean validateInput() {
         if (textField.getText().trim().isEmpty() || 
             textField_1.getText().trim().isEmpty() || 
@@ -611,6 +633,7 @@ public class panelTKNhanVien extends JPanel {
         }
         return true;
     }
+
     private void chooseImage() {
         JFileChooser fileChooser = new JFileChooser(new File("C:\\Users\\HP\\eclipse-workspace\\ProjectPTUD_QuanlyDatBan\\src\\main\\resources\\img"));
         fileChooser.setFileFilter(new FileNameExtensionFilter("Image files", "jpg", "png", "jpeg"));

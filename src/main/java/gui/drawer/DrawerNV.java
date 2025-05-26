@@ -1,12 +1,16 @@
 package gui.drawer;
 
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;	
 import java.util.Date;
 import javax.swing.JOptionPane;
+
+import dao.DAO_TaiKhoan;
 import gui.Main;
 import gui.homeAll;
 import gui.panelForm.panelDatBan;
+import gui.panelForm.panelQLyTK;
 import gui.panelForm.panelTrangChu;
 import raven.drawer.component.SimpleDrawerBuilder;
 import raven.drawer.component.footer.SimpleFooterData;
@@ -21,12 +25,16 @@ public class DrawerNV extends SimpleDrawerBuilder {
 
 	private homeAll trangChinh;
 	private Main trangDangNhap;
+	private String maNV;
+	private DAO_TaiKhoan taiKhoan;
 	public DrawerNV(homeAll trangChinh, Main trangDangNhap, String maNV) {
 		this.trangChinh = trangChinh;
 		this.trangDangNhap = trangDangNhap;
+		this.maNV = maNV;
+		this.taiKhoan = new DAO_TaiKhoan();
 		this.getSimpleHeaderData().setTitle("NTan");
 	}
-	public String getName() {
+	public String getName() throws Exception {
 		return trangChinh.getNamebyID();
 	}
 	public void showWelcomeMessage(String name) {
@@ -99,14 +107,43 @@ public class DrawerNV extends SimpleDrawerBuilder {
 						// Tài khoản
 						if (index == 5) {
 							if (subIndex == 1) {
-
+								panelQLyTK TaiKhoan = null;
+								try {
+									TaiKhoan = new panelQLyTK();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								trangChinh.setPanelBody(TaiKhoan);
 							} else if (subIndex == 2) {
-								trangChinh.setVisible(false);
-								trangDangNhap.switchToLogin();
-								trangDangNhap.setVisible(true);
+								int confirm = JOptionPane.showConfirmDialog(trangChinh, "Bạn có chắc muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+                                if (confirm == JOptionPane.YES_OPTION) {
+                                    try {
+                                        taiKhoan.updateLogoutStatus(maNV);
+                                        JOptionPane.showMessageDialog(trangChinh, "Đăng xuất thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                                        trangChinh.dispose();
+                                        trangDangNhap.switchToLogin();
+                                        trangDangNhap.setVisible(true);
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                        JOptionPane.showMessageDialog(trangChinh, "Lỗi khi đăng xuất: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                                    } catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+                                }
 
 							} else if (subIndex == 3) {
-								System.exit(0);
+								int confirm = JOptionPane.showConfirmDialog(trangChinh, "Bạn có chắc muốn thoát ứng dụng?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+                                if (confirm == JOptionPane.YES_OPTION) {
+                                    try {
+                                        taiKhoan.updateLogoutStatus(maNV); // Đăng xuất trước khi thoát
+                                        System.exit(0);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        JOptionPane.showMessageDialog(trangChinh, "Lỗi khi thoát: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                }
 							}
 						}
 					}

@@ -66,4 +66,41 @@ public class DAO_CTPhieuDatBan extends BaseDAO {
 		}
 		return null;
 	}
+
+    public boolean capNhatMaBanChoPhieuDatBan(String oldMaBan, String newMaBan) {
+        String sql = "UPDATE PhieuDatBan SET MaBan = ? WHERE MaBan = ?";
+        try (Connection conn = new BaseDAO().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newMaBan);
+            ps.setString(2, oldMaBan);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean deleteCTPhieuDatBanByMaPDB(String maPDB) {
+        String sql = "DELETE FROM ChiTietPhieuDatBan WHERE MaPDB = ?";
+        try {
+            conn = new BaseDAO().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, maPDB);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

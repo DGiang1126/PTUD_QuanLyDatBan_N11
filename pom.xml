@@ -5,23 +5,18 @@
 	<groupId>Nhom11</groupId>
 	<artifactId>ProjectPTUD</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
 	<properties>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
 	<dependencies>
-			
-		<!-- VLCJ for media handling -->
+
 		<dependency>
 			<groupId>uk.co.caprica</groupId>
 			<artifactId>vlcj</artifactId>
 			<version>4.8.2</version>
 		</dependency>
-
-		<!-- FlatLaf for modern UI -->
 		<dependency>
 			<groupId>com.formdev</groupId>
 			<artifactId>flatlaf</artifactId>
@@ -37,19 +32,28 @@
 			<artifactId>flatlaf-fonts-roboto</artifactId>
 			<version>2.137</version>
 		</dependency>
-
-		<!-- MigLayout for layout management -->
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout-swing</artifactId>
 			<version>11.1</version>
 		</dependency>
+		<!-- JFreeChart -->
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+		<!-- Apache POI -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version>
+		</dependency>
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>central</id>
-			<url>https://repo.maven.apache.org/maven2</url>
-		</repository>
-	</repositories>
 </project>

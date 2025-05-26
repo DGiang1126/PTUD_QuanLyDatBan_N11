@@ -12,10 +12,14 @@ public class HoaDon {
     private LocalDateTime ngayLap;
     private LocalDateTime ngayXuat;
     private String trangThai;
+    private PhieuDatBan ban; // Thêm từ PhieuDatBan
+	private double tongTien;
+
+
     public HoaDon() {
     	
     }
-    public HoaDon(String maHD, NhanVien nhanVien, KhachHang khachHang, PhuongThucThanhToan PTTT, ThueVAT thueVAT, KhuyenMai khuyenMai, LocalDateTime ngayLap, LocalDateTime ngayXuat, String trangThai) {
+    public HoaDon(String maHD, NhanVien nhanVien, KhachHang khachHang, PhuongThucThanhToan PTTT, ThueVAT thueVAT, KhuyenMai khuyenMai, LocalDateTime ngayLap, LocalDateTime ngayXuat, String trangThai, PhieuDatBan ban) {
     	this.maHD = maHD;
     	this.nhanVien = nhanVien;
     	this.khachHang = khachHang;
@@ -25,6 +29,7 @@ public class HoaDon {
     	this.ngayLap = ngayLap;
     	this.ngayXuat = ngayXuat;
     	this.trangThai = trangThai;
+    	this.ban=ban;
     }
     
 	public String getTrangThai() {
@@ -81,6 +86,21 @@ public class HoaDon {
 	public void setNgayXuat(LocalDateTime ngayXuat) {
 		this.ngayXuat = ngayXuat;
 	}
+
+	public double getTongTien() {
+		return tongTien;
+	}
+	public void setTongTien(double tongTien) {
+		this.tongTien = tongTien;
+	}
+	public PhieuDatBan getBan() {
+		return ban;
+	}
+	public void setBan(PhieuDatBan phieuDatBan) {
+		this.ban = phieuDatBan;
+	}
+
+
 
 
 }
