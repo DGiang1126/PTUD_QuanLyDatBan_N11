@@ -4,6 +4,7 @@ import connectDatabase.BaseDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,6 +69,19 @@ public class DAO_GopBan {
             }
         }
         return 0;
+    }
+    
+    public boolean deleteGopBanByMaBanPhu(String maBanPhu) throws Exception {
+        String sql = "DELETE FROM GopBan WHERE MaBanGop = ?";
+        try (Connection conn = new BaseDAO().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maBanPhu);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi xóa gộp bàn theo maBanPhu: " + e.getMessage());
+            throw e;
+        }
     }
     
 }

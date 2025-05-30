@@ -1,9 +1,9 @@
+
 package gui.panelForm;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -32,13 +31,9 @@ import gui.tabbed.TableHeaderAlignment;
 public class panelSearchKH extends JPanel {
     private JTable table;
     private JLabel lbTitle;
-    private JSeparator jSeparator1;
-    private JTextField textField;
-    private JTextField textField_1;
-    private JTextField textField_2;
-    private JTextField textField_3;
     private JTextField txtSearch;
     private JComboBox<String> cbSearchCriteria;
+    private JButton btnRefresh;
 
     public panelSearchKH() {
         initComponents();
@@ -66,7 +61,7 @@ public class panelSearchKH extends JPanel {
         // Thanh tìm kiếm với placeholder
         String placeholder = "Tìm kiếm khách hàng tại đây";
         txtSearch = new JTextField();
-        txtSearch.setBounds(30, 20, 238, 35);
+        txtSearch.setBounds(30, 60, 238, 35);
         txtSearch.setText(placeholder);
         txtSearch.setForeground(Color.GRAY);
         txtSearch.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -113,16 +108,22 @@ public class panelSearchKH extends JPanel {
 
         // ComboBox tiêu chí tìm kiếm
         cbSearchCriteria = new JComboBox<>();
-        cbSearchCriteria.setBounds(278, 20, 150, 35);
+        cbSearchCriteria.setBounds(278, 60, 150, 35);
         cbSearchCriteria.addItem("Mã khách hàng");
         cbSearchCriteria.addItem("Tên khách hàng");
+        cbSearchCriteria.addItem("Số điện thoại");
         add(cbSearchCriteria);
-
-        jSeparator1 = new JSeparator();
-        jSeparator1.setBounds(1535, 58, 0, 2);
+        
+        btnRefresh = new JButton("Làm mới");
+        btnRefresh.setBounds(438, 60, 100, 35);
+        btnRefresh.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnRefresh.setBackground(new Color(52, 102, 255));
+        btnRefresh.setForeground(Color.WHITE);
+        btnRefresh.setFocusPainted(false);
+        add(btnRefresh);
 
         RoundedScrollPane scrollPane = new RoundedScrollPane(table, 30);
-        scrollPane.setBounds(30, 200, 1474, 622);
+        scrollPane.setBounds(30, 120, 1474, 700);
         scrollPane.setBackground(Color.WHITE);
         table = new JTable();
 
@@ -160,65 +161,23 @@ public class panelSearchKH extends JPanel {
             table.getColumnModel().getColumn(2).setPreferredWidth(100);
         }
 
-        // Giả sử CheckBoxTableHeaderRenderer và TableHeaderAlignment đã được định nghĩa
         table.getColumnModel().getColumn(0).setHeaderRenderer(new CheckBoxTableHeaderRenderer(table, 0));
         table.getTableHeader().setDefaultRenderer(new TableHeaderAlignment(table));
 
         setLayout(null);
         add(scrollPane);
 
-        JLabel lblNewLabel = new JLabel("Tìm kiếm khách hàng");
+        JLabel lblNewLabel = new JLabel("TÌM KIẾM KHÁCH HÀNG");
         lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setBounds(18, 10, 1507, 27);
         add(lblNewLabel);
-
-        // Sử dụng RoundedPane thay vì JPanel
-        RoundedPane panel = new RoundedPane(20); // Bo tròn với bán kính 20
-        panel.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
-        panel.setBounds(30, 58, 1474, 97);
-        add(panel);
-        panel.setLayout(null);
-
-        JLabel lblNewLabel_1 = new JLabel("Mã khách hàng");
-        lblNewLabel_1.setBounds(82, 13, 97, 19);
-        panel.add(lblNewLabel_1);
-
-        textField = new JTextField();
-        textField.setBounds(201, 7, 180, 25);
-        panel.add(textField);
-        textField.setColumns(10);
-
-        JLabel lblNewLabel_1_1 = new JLabel("Tên khách hàng");
-        lblNewLabel_1_1.setBounds(82, 66, 97, 19);
-        panel.add(lblNewLabel_1_1);
-
-        textField_1 = new JTextField();
-        textField_1.setColumns(10);
-        textField_1.setBounds(201, 60, 180, 25);
-        panel.add(textField_1);
-
-        JLabel lblNewLabel_1_2 = new JLabel("Số điện thoại");
-        lblNewLabel_1_2.setBounds(549, 10, 80, 13);
-        panel.add(lblNewLabel_1_2);
-
-        textField_2 = new JTextField();
-        textField_2.setColumns(10);
-        textField_2.setBounds(651, 7, 180, 25);
-        panel.add(textField_2);
-
-        textField_3 = new JTextField();
-        textField_3.setColumns(10);
-        textField_3.setBounds(651, 60, 180, 25);
-        panel.add(textField_3);
-
-        JLabel lblNewLabel_1_2_1 = new JLabel("Giới tính");
-        lblNewLabel_1_2_1.setBounds(549, 63, 80, 13);
-        panel.add(lblNewLabel_1_2_1);
         
         searchButton.addActionListener(e -> {
-            String query = txtSearch.getText();
-            String criteria = cbSearchCriteria.getSelectedItem().toString();
+            String query = txtSearch.getText().trim();
+            String criteria = cbSearchCriteria.getSelectedItem().toString().trim().toUpperCase(); // Chuẩn hóa
+            System.out.println("Searching with query: '" + query + "', criteria: '" + criteria + "'"); // Debug
+
             if (!query.equals(placeholder) && !query.isEmpty()) {
                 try {
                     DAO_KhachHang dao = new DAO_KhachHang();
@@ -239,12 +198,28 @@ public class panelSearchKH extends JPanel {
                     }
                     if (result.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        System.out.println("Found " + result.size() + " records."); // Debug
                     }
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Lỗi khi tìm kiếm: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập từ khóa tìm kiếm!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        
+        btnRefresh.addActionListener(e -> {
+            try {
+                loadDataToTable();
+                txtSearch.setText(placeholder);
+                txtSearch.setForeground(Color.GRAY);
+                cbSearchCriteria.setSelectedIndex(0);
+                JOptionPane.showMessageDialog(null, "Dữ liệu đã được làm mới!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Lỗi khi làm mới dữ liệu: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
@@ -319,37 +294,6 @@ public class panelSearchKH extends JPanel {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(Color.GRAY);
             g2.draw(new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius));
-            g2.dispose();
-        }
-    }
-
-    // Class RoundedPane được thêm vào
-    class RoundedPane extends JPanel {
-        private int cornerRadius;
-
-        public RoundedPane(int radius) {
-            this.cornerRadius = radius;
-            setOpaque(false);
-            setBorder(new EmptyBorder(5, 5, 5, 5));
-            setBackground(Color.WHITE);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(getBackground());
-            g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius));
-            g2.dispose();
-        }
-
-        @Override
-        protected void paintBorder(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(Color.GRAY);
-            g2.draw(new RoundRectangle2D.Float(1, 1, getWidth() - 2, getHeight() - 2, cornerRadius, cornerRadius));
             g2.dispose();
         }
     }

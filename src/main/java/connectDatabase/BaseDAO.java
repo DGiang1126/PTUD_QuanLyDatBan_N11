@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 
 public class BaseDAO {
     public Connection getConnection() throws Exception {
-        String url = "jdbc:sqlserver://NTAN1\\SQLEXPRESS:1433;databaseName=QuanLyDatBan;encrypt=false;trustServerCertificate=true";
+        String url = "jdbc:sqlserver://DESKTOP-FH57LVM:1433;databaseName=QuanLyDatBan;encrypt=false;trustServerCertificate=true"; 
         String user = "sa";
-        String password = "123456789";
+        String password = "12";
         return DriverManager.getConnection(url, user, password);
     }
 

@@ -221,4 +221,22 @@ public class DAO_Ban extends BaseDAO {
 		}
 		return banTrongList;
 	}
+	
+	public List<String> getMaBanByMaKH(String maKH) throws Exception {
+	    List<String> maBanList = new ArrayList<>();
+	    String query = "SELECT DISTINCT maBan FROM PhieuDatBan WHERE MaKhachHang = ?";
+	    try (Connection conn = new BaseDAO().getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(query)) {
+	        stmt.setString(1, maKH);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                maBanList.add(rs.getString("maBan"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Lỗi khi lấy maBan theo maKH: " + e.getMessage());
+	        throw e;
+	    }
+	    return maBanList;
+	}
 }

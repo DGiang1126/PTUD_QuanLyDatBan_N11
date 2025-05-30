@@ -26,33 +26,33 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/flatlaf-fonts-roboto-2.137.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/flatlaf-3.4.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/flatlaf-extras-3.4.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/jna-5.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/jsvg-1.4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/miglayout-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/miglayout-swing.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/picture-box-1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/swing-datetime-picker-1.2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/swing-jnafilechooser.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/swing-toast-notifications-1.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/thumbnailator-0.4.20.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/sqljdbc4-2.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-21">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/swing-glasspane-popup-1.3.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/jcalendar-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/core-3.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="src/main/resources/libs/javase-3.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/core-3.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/flatlaf-3.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/flatlaf-extras-3.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/flatlaf-fonts-roboto-2.137.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/javase-3.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/jcalendar-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/jna-5.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/jsvg-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/miglayout-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/miglayout-swing.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/picture-box-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/sqljdbc4-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/swing-datetime-picker-1.2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/swing-glasspane-popup-1.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/swing-jnafilechooser.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/swing-toast-notifications-1.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/HK2_IUH_22646851_Nam3/PTUD/project_PTUD_N11_IUH/ProjectPTUD_QuanlyDatBan/src/main/resources/libs/thumbnailator-0.4.20.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

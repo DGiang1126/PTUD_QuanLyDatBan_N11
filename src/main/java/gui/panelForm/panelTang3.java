@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 import com.formdev.flatlaf.FlatLaf;
@@ -674,154 +675,234 @@ public class panelTang3 extends JPanel {
 		panel_ChiTietBan.repaint();
 	}
 
+	
 	private void showPaymentMethodDialog(String tenBan, String maKH, String maHD, long amount) {
-		JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(this), "Chọn Phương Thức Thanh Toán",
-				Dialog.ModalityType.APPLICATION_MODAL);
-		dialog.getContentPane().setLayout(null);
-		dialog.setSize(400, 300);
-		dialog.setLocationRelativeTo(null);
-		dialog.setUndecorated(true);
+	    JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(this), "Chọn Phương Thức Thanh Toán",
+	            Dialog.ModalityType.APPLICATION_MODAL);
+	    dialog.setLayout(null);
+	    dialog.setSize(400, 300);
+	    dialog.setLocationRelativeTo(null);
+	    dialog.setUndecorated(true);
 
-		JLabel lblTitle = new JLabel("CHỌN PHƯƠNG THỨC THANH TOÁN");
-		lblTitle.setBounds(0, 20, 400, 30);
-		lblTitle.setFont(new Font("Roboto", Font.BOLD, 18));
-		lblTitle.setForeground(new Color(17, 24, 39));
-		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		dialog.getContentPane().add(lblTitle);
+	    JLabel lblTitle = new JLabel("CHỌN PHƯƠNG THỨC THANH TOÁN");
+	    lblTitle.setBounds(0, 20, 400, 30);
+	    lblTitle.setFont(new Font("Roboto", Font.BOLD, 18));
+	    lblTitle.setForeground(new Color(17, 24, 39));
+	    lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+	    dialog.add(lblTitle);
 
-		String[] paymentMethods = { "Chọn phương thức thanh toán", "Tiền mặt", "Chuyển khoản ngân hàng", "Ví điện tử Momo" };
-		JComboBox<String> comboPTTT = new JComboBox<>(paymentMethods);
-		comboPTTT.setBounds(50, 60, 300, 40);
-		comboPTTT.setFont(new Font("Roboto", Font.PLAIN, 14));
-		comboPTTT.setBackground(Color.WHITE);
-		dialog.getContentPane().add(comboPTTT);
+	    String[] paymentMethods = { "Chọn phương thức thanh toán", "Tiền mặt", "Chuyển khoản ngân hàng", "Ví điện tử Momo" };
+	    JComboBox<String> comboPTTT = new JComboBox<>(paymentMethods);
+	    comboPTTT.setBounds(50, 60, 300, 40);
+	    comboPTTT.setFont(new Font("Roboto", Font.PLAIN, 14));
+	    comboPTTT.setBackground(Color.WHITE);
+	    dialog.add(comboPTTT);
 
-		JLabel lblCashAmount = new JLabel("SỐ TIỀN KHÁCH ĐƯA:");
-		lblCashAmount.setBounds(50, 110, 150, 30);
-		lblCashAmount.setFont(new Font("Roboto", Font.PLAIN, 14));
-		lblCashAmount.setVisible(false);
-		dialog.getContentPane().add(lblCashAmount);
+	    JLabel lblCashAmount = new JLabel("SỐ TIỀN KHÁCH ĐƯA:");
+	    lblCashAmount.setBounds(50, 110, 150, 30);
+	    lblCashAmount.setFont(new Font("Roboto", Font.PLAIN, 14));
+	    lblCashAmount.setVisible(false);
+	    dialog.add(lblCashAmount);
 
-		JTextField txtCashAmount = new JTextField();
-		txtCashAmount.setBounds(200, 110, 150, 30);
-		txtCashAmount.setFont(new Font("Roboto", Font.PLAIN, 14));
-		txtCashAmount.setBorder(BorderFactory.createLineBorder(new Color(229, 231, 235)));
-		txtCashAmount.setVisible(false);
-		dialog.getContentPane().add(txtCashAmount);
+	    JTextField txtCashAmount = new JTextField();
+	    txtCashAmount.setBounds(200, 110, 150, 30);
+	    txtCashAmount.setFont(new Font("Roboto", Font.PLAIN, 14));
+	    txtCashAmount.setBorder(BorderFactory.createLineBorder(new Color(229, 231, 235)));
+	    txtCashAmount.setVisible(false);
+	    dialog.add(txtCashAmount);
 
-		JButton btnCancel = new JButton("HỦY");
-		btnCancel.setBounds(50, 200, 150, 40);
-		btnCancel.setFont(new Font("Roboto", Font.BOLD, 14));
-		btnCancel.setBackground(new Color(239, 68, 68));
-		btnCancel.setForeground(Color.WHITE);
-		btnCancel.setFocusPainted(false);
-		btnCancel.setBorderPainted(false);
-		btnCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnCancel.setBackground(new Color(220, 38, 38));
-			}
+	    JButton btnCancel = new JButton("HỦY");
+	    btnCancel.setBounds(50, 200, 150, 40);
+	    btnCancel.setFont(new Font("Roboto", Font.BOLD, 14));
+	    btnCancel.setBackground(new Color(239, 68, 68));
+	    btnCancel.setForeground(Color.WHITE);
+	    btnCancel.setFocusPainted(false);
+	    btnCancel.setBorderPainted(false);
+	    btnCancel.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseEntered(MouseEvent e) {
+	            btnCancel.setBackground(new Color(220, 38, 38));
+	        }
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnCancel.setBackground(new Color(239, 68, 68));
-			}
-		});
-		btnCancel.addActionListener(e -> dialog.dispose());
-		dialog.getContentPane().add(btnCancel);
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            btnCancel.setBackground(new Color(239, 68, 68));
+	        }
+	    });
+	    btnCancel.addActionListener(e -> dialog.dispose());
+	    dialog.add(btnCancel);
 
-		JButton btnConfirm = new JButton("XÁC NHẬN");
-		btnConfirm.setBounds(200, 200, 150, 40);
-		btnConfirm.setFont(new Font("Roboto", Font.BOLD, 14));
-		btnConfirm.setBackground(new Color(34, 197, 94));
-		btnConfirm.setForeground(Color.WHITE);
-		btnConfirm.setFocusPainted(false);
-		btnConfirm.setBorderPainted(false);
-		btnConfirm.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnConfirm.setBackground(new Color(22, 163, 74));
-			}
+	    JButton btnConfirm = new JButton("XÁC NHẬN");
+	    btnConfirm.setBounds(200, 200, 150, 40);
+	    btnConfirm.setFont(new Font("Roboto", Font.BOLD, 14));
+	    btnConfirm.setBackground(new Color(34, 197, 94));
+	    btnConfirm.setForeground(Color.WHITE);
+	    btnConfirm.setFocusPainted(false);
+	    btnConfirm.setBorderPainted(false);
+	    btnConfirm.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseEntered(MouseEvent e) {
+	            btnConfirm.setBackground(new Color(22, 163, 74));
+	        }
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnConfirm.setBackground(new Color(34, 197, 94));
-			}
-		});
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            btnConfirm.setBackground(new Color(34, 197, 94));
+	        }
+	    });
 
-		comboPTTT.addActionListener(e -> {
-			String selectedMethod = (String) comboPTTT.getSelectedItem();
-			boolean isCash = selectedMethod.equals("Tiền mặt");
-			lblCashAmount.setVisible(isCash);
-			txtCashAmount.setVisible(isCash);
-		});
+	    comboPTTT.addActionListener(e -> {
+	        String selectedMethod = (String) comboPTTT.getSelectedItem();
+	        boolean isCash = selectedMethod.equals("Tiền mặt");
+	        lblCashAmount.setVisible(isCash);
+	        txtCashAmount.setVisible(isCash);
+	    });
 
-		btnConfirm.addActionListener(e -> {
-			String selectedMethod = (String) comboPTTT.getSelectedItem();
-			try {
-				if (selectedMethod.equals("Tiền mặt")) {
-					String cashInput = txtCashAmount.getText().trim();
-					if (cashInput.isEmpty()) {
-						JOptionPane.showMessageDialog(dialog, "Vui lòng nhập số tiền khách đưa!");
-						return;
-					}
-					long cashAmount;
-					try {
-						cashAmount = Long.parseLong(cashInput);
-					} catch (NumberFormatException ex) {
-						JOptionPane.showMessageDialog(dialog, "Số tiền không hợp lệ!");
-						return;
-					}
-					if (cashAmount < amount) {
-						JOptionPane.showMessageDialog(dialog, "Số tiền khách đưa không đủ!");
-						return;
-					}
-					long change = cashAmount - amount;
-					hoaDon_DAO.capNhatTrangThaiHoaDon(maHD, "Đã thanh toán");
-					String maBanChinh = Ban_DAO.getMaBanByTenBan(tenBan);
-	                if (maBanChinh != null) {
-	                    // Lấy danh sách bàn phụ từ GopBan
-	                    DAO_GopBan gopBan_DAO = new DAO_GopBan();
-	                    List<String> mergedBans = gopBan_DAO.getMergedBans(maBanChinh);
+	    btnConfirm.addActionListener(e -> {
+	        String selectedMethod = (String) comboPTTT.getSelectedItem();
+	        try {
+	            // Bước 1: Tìm tất cả các bàn liên quan đến maKH
+	            Set<String> allRelatedBans = new HashSet<>();
+	            
+	            // Lấy tất cả maBan từ HoaDon liên quan đến maKH
+	            List<String> maBansFromHoaDon = Ban_DAO.getMaBanByMaKH(maKH);
+	            if (maBansFromHoaDon.isEmpty()) {
+	                JOptionPane.showMessageDialog(dialog, "Không tìm thấy bàn nào liên quan đến khách hàng này!");
+	                return;
+	            }
 
-	                    // Cập nhật trạng thái tất cả bàn thành "CÒN TRỐNG"
-	                    Ban_DAO.capNhatTrangThaiBan(tenBan, "CÒN TRỐNG"); // Bàn chính
-	                    for (String maBanGop : mergedBans) {
-	                        Ban banGop = Ban_DAO.getBanbyMaBan(maBanGop);
-	                        if (banGop != null) {
-	                            Ban_DAO.capNhatTrangThaiBan(banGop.getTenBan(), "CÒN TRỐNG");
-	                        }
-	                    }
-
-	                    // Xóa thông tin gộp bàn
-	                    gopBan_DAO.deleteGopBanByMaBanChinh(maBanChinh);
+	            // Duyệt qua tất cả maBan từ HoaDon để tìm chuỗi gộp
+	            gopBan_DAO = new DAO_GopBan();
+	            Queue<String> queue = new LinkedList<>();
+	            queue.addAll(maBansFromHoaDon);
+	            while (!queue.isEmpty()) {
+	                String currentMaBan = queue.poll();
+	                if (!allRelatedBans.add(currentMaBan)) {
+	                    continue; // Nếu maBan đã được xử lý, bỏ qua
 	                }
-					JOptionPane.showMessageDialog(dialog,
-							"Thanh toán thành công!\n" + "Phương thức: " + selectedMethod + "\n" + "Số tiền cần trả: "
-									+ amount + "\n" + "Số tiền khách đưa: " + cashAmount + "\n" + "Tiền thối: "
-									+ change);
-					refreshBanList();
-					panel_ChiTietBan.setVisible(false);
-					panel_Ban.setVisible(true);
-					dialog.dispose();
-				} else if (selectedMethod.equals("Ví điện tử Momo")) {
-//					generateAndShowQRCode(tenBan);
-					dialog.dispose();
-				} else if (selectedMethod.equals("Chuyển khoản ngân hàng")) {
-					generateAndShowBank(tenBan);
-					dialog.dispose();
-				}
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(dialog, "Lỗi khi cập nhật dữ liệu: " + ex.getMessage());
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(dialog, "Lỗi khi tạo mã QR: " + ex.getMessage());
-			}
-		});
-		dialog.getContentPane().add(btnConfirm);
 
-		dialog.setVisible(true);
+	                // Tìm các bàn phụ đã gộp với currentMaBan
+	                List<String> mergedBans = gopBan_DAO.getMergedBans(currentMaBan);
+	                for (String maBanGop : mergedBans) {
+	                    if (!allRelatedBans.contains(maBanGop)) {
+	                        queue.add(maBanGop);
+	                    }
+	                }
+
+	                // Tìm bàn chính của currentMaBan (nếu có)
+	                String maBanChinh = gopBan_DAO.getMaBanChinh(currentMaBan);
+	                if (maBanChinh != null && !allRelatedBans.contains(maBanChinh)) {
+	                    queue.add(maBanChinh);
+	                }
+	            }
+
+	            // Bước 2: Xử lý thanh toán
+	            if (selectedMethod.equals("Tiền mặt")) {
+	                String cashInput = txtCashAmount.getText().trim();
+	                if (cashInput.isEmpty()) {
+	                    JOptionPane.showMessageDialog(dialog, "Vui lòng nhập số tiền khách đưa!");
+	                    return;
+	                }
+	                long cashAmount;
+	                try {
+	                    cashAmount = Long.parseLong(cashInput);
+	                } catch (NumberFormatException ex) {
+	                    JOptionPane.showMessageDialog(dialog, "Số tiền không hợp lệ!");
+	                    return;
+	                }
+	                if (cashAmount < amount) {
+	                    JOptionPane.showMessageDialog(dialog, "Số tiền khách đưa không đủ!");
+	                    return;
+	                }
+	                long change = cashAmount - amount;
+	                hoaDon_DAO.capNhatTrangThaiHoaDon(maHD, "Đã thanh toán");
+
+	                // Cập nhật trạng thái tất cả bàn liên quan thành "CÒN TRỐNG"
+	                for (String maBan : allRelatedBans) {
+	                    Ban ban = Ban_DAO.getBanbyMaBan(maBan);
+	                    if (ban != null) {
+	                        Ban_DAO.capNhatTrangThaiBan(ban.getTenBan(), "CÒN TRỐNG");
+	                    }
+	                }
+
+	                // Xóa toàn bộ thông tin gộp liên quan đến các maBan
+	                for (String maBan : allRelatedBans) {
+	                    gopBan_DAO.deleteGopBanByMaBanChinh(maBan);
+	                    gopBan_DAO.deleteGopBanByMaBanPhu(maBan); // Xóa các bản ghi mà maBan là maBanPhu
+	                }
+
+	                JOptionPane.showMessageDialog(dialog,
+	                        "Thanh toán thành công!\n" + "Phương thức: " + selectedMethod + "\n" + "Số tiền cần trả: "
+	                                + amount + "\n" + "Số tiền khách đưa: " + cashAmount + "\n" + "Tiền thối: "
+	                                + change);
+	                refreshBanList();
+	                panel_ChiTietBan.setVisible(false);
+	                panel_Ban.setVisible(true);
+	                dialog.dispose();
+	            } else if (selectedMethod.equals("Ví điện tử Momo")) {
+	                generateAndShowQRCode(tenBan);
+	                hoaDon_DAO.capNhatTrangThaiHoaDon(maHD, "Đã thanh toán");
+
+	                // Cập nhật trạng thái tất cả bàn liên quan thành "CÒN TRỐNG"
+	                for (String maBan : allRelatedBans) {
+	                    Ban ban = Ban_DAO.getBanbyMaBan(maBan);
+	                    if (ban != null) {
+	                        Ban_DAO.capNhatTrangThaiBan(ban.getTenBan(), "CÒN TRỐNG");
+	                    }
+	                }
+
+	                // Xóa toàn bộ thông tin gộp liên quan đến các maBan
+	                for (String maBan : allRelatedBans) {
+	                    gopBan_DAO.deleteGopBanByMaBanChinh(maBan);
+	                    gopBan_DAO.deleteGopBanByMaBanPhu(maBan); // Xóa các bản ghi mà maBan là maBanPhu
+	                }
+
+	                JOptionPane.showMessageDialog(dialog,
+	                        "Thanh toán thành công!\n" +
+	                        "Phương thức: " + selectedMethod + "\n" +
+	                        "Số tiền cần trả: " + amount);
+	                refreshBanList();
+	                panel_ChiTietBan.setVisible(false);
+	                panel_Ban.setVisible(true);
+	                dialog.dispose();
+	            } else if (selectedMethod.equals("Chuyển khoản ngân hàng")) {
+	                generateAndShowBank(tenBan);
+	                hoaDon_DAO.capNhatTrangThaiHoaDon(maHD, "Đã thanh toán");
+
+	                // Cập nhật trạng thái tất cả bàn liên quan thành "CÒN TRỐNG"
+	                for (String maBan : allRelatedBans) {
+	                    Ban ban = Ban_DAO.getBanbyMaBan(maBan);
+	                    if (ban != null) {
+	                        Ban_DAO.capNhatTrangThaiBan(ban.getTenBan(), "CÒN TRỐNG");
+	                    }
+	                }
+
+	                // Xóa toàn bộ thông tin gộp liên quan đến các maBan
+	                for (String maBan : allRelatedBans) {
+	                    gopBan_DAO.deleteGopBanByMaBanChinh(maBan);
+	                    gopBan_DAO.deleteGopBanByMaBanPhu(maBan); // Xóa các bản ghi mà maBan là maBanPhu
+	                }
+
+	                JOptionPane.showMessageDialog(dialog,
+	                        "Thanh toán thành công!\n" +
+	                        "Phương thức: " + selectedMethod + "\n" +
+	                        "Số tiền cần trả: " + amount);
+	                refreshBanList();
+	                panel_ChiTietBan.setVisible(false);
+	                panel_Ban.setVisible(true);
+	                dialog.dispose();
+	            }
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(dialog, "Lỗi khi cập nhật dữ liệu: " + ex.getMessage());
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(dialog, "Lỗi khi tạo mã QR: " + ex.getMessage());
+	        }
+	    });
+	    dialog.add(btnConfirm);
+
+	    dialog.setVisible(true);
 	}
 
 	private void generateAndShowBank(String tenBan) throws Exception {
@@ -927,7 +1008,6 @@ public class panelTang3 extends JPanel {
 				String maHD = hoaDon_DAO.getMaHDByMaKHAndStatus(maKH, "Chưa thanh toán");
 				hoaDon_DAO.capNhatTrangThaiHoaDon(maHD, "Đã thanh toán");
 				Ban_DAO.capNhatTrangThaiBan(tenBan, "CÒN TRỐNG");
-				JOptionPane.showMessageDialog(qrDialog, "Thanh toán qua MB Bank thành công!\nSố tiền: " + amount);
 				refreshBanList();
 				panel_ChiTietBan.setVisible(false);
 				panel_Ban.setVisible(true);
@@ -1107,7 +1187,6 @@ public class panelTang3 extends JPanel {
 				String maHD = hoaDon_DAO.getMaHDByMaKHAndStatus(maKH, "Chưa thanh toán");
 				hoaDon_DAO.capNhatTrangThaiHoaDon(maHD, "Đã thanh toán");
 				Ban_DAO.capNhatTrangThaiBan(tenBan, "CÒN TRỐNG");
-				JOptionPane.showMessageDialog(qrDialog, "Thanh toán qua Momo thành công!\nSố tiền: " + amount);
 				refreshBanList();
 				panel_ChiTietBan.setVisible(false);
 				panel_Ban.setVisible(true);
@@ -1351,7 +1430,7 @@ public class panelTang3 extends JPanel {
 					if (maHD == null) {
 						LocalDateTime ngayLap = LocalDateTime.now();
 						LocalDateTime ngayXuat = LocalDateTime.now();
-						boolean isAdded = hoaDon_DAO.themHD("NV001", maKH, "PTTT01", "VAT01", "KM001", ngayLap, ngayXuat,
+						boolean isAdded = hoaDon_DAO.themHD("NV001", maKH, "PTTT01", "VAT01", "KM01", ngayLap, ngayXuat,
 								"Chưa thanh toán");
 						maHD = hoaDon_DAO.getMaHDByMaKHAndStatus(maKH, "Chưa thanh toán");
 					}
@@ -1463,15 +1542,15 @@ public class panelTang3 extends JPanel {
 	
 	private void showMergeTableDialog(String mainTableName, String maKH) throws SQLException {
 	    JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(this), "CHỌN BÀN ĐỂ GỘP", Dialog.ModalityType.APPLICATION_MODAL);
-	    dialog.getContentPane().setLayout(null);
-	    dialog.setSize(400, 400);
+	    dialog.setLayout(null);
+	    dialog.setSize(400, 500);
 	    dialog.setLocationRelativeTo(null);
 	    
 	    JLabel lblTitle = new JLabel("Chọn bàn để gộp với " + mainTableName);
 	    lblTitle.setBounds(0, 10, 400, 30);
 	    lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 15));
 	    lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-	    dialog.getContentPane().add(lblTitle);
+	    dialog.add(lblTitle);
 	    
 	    JList<String> tableList = new JList<>();
 	    DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -1487,20 +1566,35 @@ public class panelTang3 extends JPanel {
 	            return;
 	        }
 
-	        // Lấy danh sách bàn khả dụng
-	        List<Ban> availableTables = Ban_DAO.getAllBansinTang3().stream()
+	        // Lấy danh sách tất cả bàn từ cả 3 tầng, loại bỏ trùng lặp
+	        Map<String, Ban> uniqueBans = new HashMap<>(); // Sử dụng Map để loại bỏ trùng lặp dựa trên maBan
+	        List<Ban> allBans = new ArrayList<>();
+	        allBans.addAll(Ban_DAO.getAllBansinTang1());
+	        allBans.addAll(Ban_DAO.getAllBansinTang2());
+	        allBans.addAll(Ban_DAO.getAllBansinTang3());
+
+	        // Loại bỏ trùng lặp bằng cách lưu vào Map với key là maBan
+	        for (Ban ban : allBans) {
+	            uniqueBans.put(ban.getMaBan(), ban);
+	        }
+
+	        // Lấy danh sách các bàn đã được gộp với mainMaBan
+	        List<String> mergedBans = gopBan_DAO.getMergedBans(mainMaBan); // Thêm phương thức này trong DAO_GopBan
+
+	        // Lấy danh sách bàn khả dụng (không giới hạn tầng)
+	        List<Ban> availableTables = uniqueBans.values().stream()
 	                .filter(ban -> (ban.getTrangThai().equals("ĐANG SỬ DỤNG") || ban.getTrangThai().equals("CÒN TRỐNG") || ban.getTrangThai().equals("ĐÃ ĐẶT"))
-	                        && !ban.getTenBan().equals(mainTableName))
+	                        && !ban.getTenBan().equals(mainTableName)) // Loại bỏ chính bàn đang chọn
 	                .filter(ban -> {
 	                    try {
-	                        String maBan = Ban_DAO.getMaBanByTenBan(ban.getTenBan());
-	                        // Kiểm tra xem bàn có thuộc bàn chính nào không
-	                        if (gopBan_DAO.getMaBanChinh(maBan) != null) {
+	                        String maBan = ban.getMaBan();
+	                        // Loại bỏ các bàn đã được gộp với mainMaBan
+	                        if (mergedBans.contains(maBan)) {
 	                            return false;
 	                        }
-	                        // Kiểm tra số bàn đã gộp của bàn đích
-	                        int mergedCount = gopBan_DAO.countMergedTables(maBan);
-	                        return mergedCount < 2; // Chỉ hiển thị bàn chưa đạt giới hạn gộp (tối đa 2 bàn phụ)
+	                        String existingMaBanChinh = gopBan_DAO.getMaBanChinh(maBan);
+	                        // Chỉ cho phép gộp nếu bàn chưa thuộc bàn chính nào khác
+	                        return existingMaBanChinh == null || existingMaBanChinh.equals(mainMaBan);
 	                    } catch (Exception e) {
 	                        e.printStackTrace();
 	                        return false;
@@ -1508,11 +1602,27 @@ public class panelTang3 extends JPanel {
 	                })
 	                .collect(Collectors.toList());
 
+	        // Nhóm và hiển thị danh sách bàn theo tầng
+	        Map<String, List<Ban>> groupedByTang = new HashMap<>();
 	        for (Ban ban : availableTables) {
-	            String maBan = ban.getMaBan();
-	            PhieuDatBan pdb = PDB_DAO.getLatestPDBByMaBan(maBan);
-	            String khInfo = (pdb != null && (ban.getTrangThai().equals("ĐANG SỬ DỤNG") || ban.getTrangThai().equals("ĐÃ ĐẶT"))) ? " (KH: " + pdb.getMaKH() + ")" : " (Trống)";
-	            listModel.addElement(ban.getTenBan() + " (Số chỗ: " + ban.getSoCho() + ")" + khInfo);
+	            String tang = getTang(ban);
+	            groupedByTang.computeIfAbsent(tang, k -> new ArrayList<>()).add(ban);
+	        }
+
+	        // Thêm danh sách theo thứ tự Tầng 1, Tầng 2, Tầng 3
+	        String[] tangs = {"Tầng 1", "Tầng 2", "Tầng 3"};
+	        for (String tang : tangs) {
+	            List<Ban> tangBans = groupedByTang.getOrDefault(tang, new ArrayList<>());
+	            if (!tangBans.isEmpty()) {
+	                listModel.addElement(tang + ":");
+	                for (Ban ban : tangBans) {
+	                    String maBan = ban.getMaBan();
+	                    PhieuDatBan pdb = PDB_DAO.getLatestPDBByMaBan(maBan);
+	                    String khInfo = (pdb != null && (ban.getTrangThai().equals("ĐANG SỬ DỤNG") || ban.getTrangThai().equals("ĐÃ ĐẶT")))
+	                            ? " (KH: " + pdb.getMaKH() + ")" : " (Trống)";
+	                    listModel.addElement(maBan + "-Bàn " + ban.getTenBan().replace("Bàn ", "") + "(Tầng " + tang.replace("Tầng ", "") + ", Số chỗ :" + ban.getSoCho() + ")" + khInfo);
+	                }
+	            }
 	        }
 
 	        if (listModel.isEmpty()) {
@@ -1523,14 +1633,15 @@ public class panelTang3 extends JPanel {
 	        e.printStackTrace();
 	        JOptionPane.showMessageDialog(dialog, "Lỗi khi lấy danh sách bàn: " + e.getMessage());
 	    }
+
 	    tableList.setModel(listModel);
 	    tableList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	    JScrollPane scrollPane = new JScrollPane(tableList);
-	    scrollPane.setBounds(50, 50, 300, 200);
-	    dialog.getContentPane().add(scrollPane);
+	    scrollPane.setBounds(50, 50, 300, 300);
+	    dialog.add(scrollPane);
 
 	    JButton btnMerge = new JButton("GỘP BÀN");
-	    btnMerge.setBounds(100, 260, 200, 40);
+	    btnMerge.setBounds(100, 360, 200, 40);
 	    btnMerge.setFont(new Font("Segoe UI", Font.BOLD, 15));
 	    btnMerge.setBackground(new Color(245, 158, 11));
 	    btnMerge.setForeground(Color.WHITE);
@@ -1549,31 +1660,12 @@ public class panelTang3 extends JPanel {
 	    
 	    btnMerge.addActionListener(e -> {
 	        List<String> selectedTables = tableList.getSelectedValuesList().stream()
-	                .map(s -> s.split(" \\(")[0].trim())
+	                .filter(s -> !s.startsWith("Tầng")) // Loại bỏ các dòng tiêu đề tầng
+	                .map(s -> s.split("-")[1].split("\\(")[0].trim()) // Lấy tenBan từ chuỗi hiển thị
 	                .collect(Collectors.toList());
-	        System.out.println("Selected tables: " + selectedTables);
 	        if (selectedTables.isEmpty()) {
 	            JOptionPane.showMessageDialog(dialog, "Vui lòng chọn ít nhất một bàn để gộp!");
 	            return;
-	        }
-
-	        // Kiểm tra giới hạn gộp của bàn đích
-	        for (String tableName : selectedTables) {
-	            String maBan = Ban_DAO.getMaBanByTenBan(tableName);
-	            try {
-	                int mergedCount = gopBan_DAO.countMergedTables(maBan);
-	                if (mergedCount >= 2) {
-	                    JOptionPane.showMessageDialog(dialog, tableName + " đã đạt giới hạn gộp 3 bàn!");
-	                    return;
-	                }
-	            } catch (SQLException ex) {
-	                ex.printStackTrace();
-	                JOptionPane.showMessageDialog(dialog, "Lỗi khi kiểm tra số bàn gộp: " + ex.getMessage());
-	                return;
-	            } catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 	        }
 
 	        selectedTables.add(0, mainTableName);
@@ -1605,8 +1697,6 @@ public class panelTang3 extends JPanel {
 	            String khachHang = (pdb != null) ? pdb.getMaKH() : null;
 	            String trangThai = Ban_DAO.getBanbyTenBan(tableName).getTrangThai();
 
-	            // Hiển thị cảnh báo nếu:
-	            // 1. Cả hai bàn đều có khách hàng và khách hàng khác nhau (ĐANG SỬ DỤNG hoặc ĐÃ ĐẶT)
 	            if (mainPDB != null && pdb != null && !mainKhachHang.equals(khachHang)) {
 	                showWarning = true;
 	                warningMessage = tableName + " thuộc về " + khachHang + ", có chắc chắn muốn gộp không?";
@@ -1625,10 +1715,10 @@ public class panelTang3 extends JPanel {
 	        dialog.dispose();
 	        refreshBanList();
 	    });
-	    dialog.getContentPane().add(btnMerge);
+	    dialog.add(btnMerge);
 	    
 	    JButton btnCancel = new JButton("HỦY");
-	    btnCancel.setBounds(150, 310, 100, 30);
+	    btnCancel.setBounds(150, 410, 100, 30);
 	    btnCancel.setFont(new Font("Roboto", Font.BOLD, 12));
 	    btnCancel.setBackground(new Color(239, 68, 68));
 	    btnCancel.setForeground(Color.WHITE);
@@ -1645,9 +1735,41 @@ public class panelTang3 extends JPanel {
 	        }
 	    });
 	    btnCancel.addActionListener(e -> dialog.dispose());
-	    dialog.getContentPane().add(btnCancel);
+	    dialog.add(btnCancel);
 	    
 	    dialog.setVisible(true);
+	}
+	
+	// Phương thức hỗ trợ để xác định tầng của bàn (cải thiện logic)
+	private String getTang(Ban ban) {
+	    try {
+	        String maBan = ban.getMaBan();
+	        // Giả định maBan chứa thông tin tầng (ví dụ: B001-B006 là Tầng 1, B007-B010 là Tầng 2, v.v.)
+	        // Bạn cần điều chỉnh logic này dựa trên cách bạn lưu tầng trong maBan hoặc cơ sở dữ liệu
+	        if (maBan != null && !maBan.isEmpty()) {
+	            String maBanPrefix = maBan.substring(0, 1); // Lấy ký tự đầu tiên của maBan (B)
+	            String maBanNumber = maBan.substring(1); // Lấy số sau B
+	            int banNumber = Integer.parseInt(maBanNumber);
+	            if (banNumber >= 2 && banNumber <= 6) {
+	                return "Tầng 1";
+	            } else if (banNumber >= 7 && banNumber <= 10) {
+	                return "Tầng 2";
+	            } else if (banNumber >= 11 && banNumber <= 12) {
+	                return "Tầng 3";
+	            }
+	        }
+	        // Nếu không xác định được, kiểm tra bằng cách so sánh với danh sách tầng
+	        if (Ban_DAO.getAllBansinTang1().stream().anyMatch(b -> b.getMaBan().equals(ban.getMaBan()))) {
+	            return "Tầng 1";
+	        } else if (Ban_DAO.getAllBansinTang2().stream().anyMatch(b -> b.getMaBan().equals(ban.getMaBan()))) {
+	            return "Tầng 2";
+	        } else if (Ban_DAO.getAllBansinTang3().stream().anyMatch(b -> b.getMaBan().equals(ban.getMaBan()))) {
+	            return "Tầng 3";
+	        }
+	    } catch (NumberFormatException e) {
+	        e.printStackTrace();
+	    }
+	    return "Tầng không xác định";
 	}
 	
 	private void mergeTables(List<String> tableNames, String maKH) {
@@ -1658,25 +1780,17 @@ public class panelTang3 extends JPanel {
 	        hoaDon_DAO = new DAO_HoaDon();
 	        CTHD_DAO = new DAO_CTHoaDon();
 	        monAn_DAO = new DAO_MonAn();
+	        gopBan_DAO = new DAO_GopBan();
 	        
 	        String mainTableName = tableNames.get(0);
 	        String mainMaBan = Ban_DAO.getMaBanByTenBan(mainTableName);
 	        if (mainMaBan == null) {
-	        	
 	            JOptionPane.showMessageDialog(this, "Không tìm thấy mã bàn chính: " + mainTableName + "!");
 	            return;
 	        }
 	        Ban mainBan = Ban_DAO.getBanbyTenBan(mainTableName);
 	        if (mainBan == null) {
 	            JOptionPane.showMessageDialog(this, "Bàn chính không tồn tại: " + mainTableName + "!");
-	            return;
-	        }
-	        
-	        // Kiểm tra số bàn đã gộp trong database
-	        DAO_GopBan gopBan_DAO = new DAO_GopBan();
-	        int existingMergedCount = gopBan_DAO.countMergedTables(mainMaBan);
-	        if (existingMergedCount + (tableNames.size() - 1) > 2) { // Tổng số bàn gộp (đã có + mới) không vượt quá 3
-	            JOptionPane.showMessageDialog(this, mainTableName + " đã đạt giới hạn gộp 3 bàn!");
 	            return;
 	        }
 	        
@@ -1700,6 +1814,9 @@ public class panelTang3 extends JPanel {
 	        List<String> mergedTables = new ArrayList<>();
 	        mergedTables.add(mainTableName);
 
+	        // Lấy danh sách các bàn đã được gộp với mainMaBan
+	        List<String> existingMergedBans = gopBan_DAO.getMergedBans(mainMaBan);
+
 	        // Kiểm tra các bàn cần gộp và tính tổng số khách
 	        for (int i = 1; i < tableNames.size(); i++) {
 	            String tableName = tableNames.get(i);
@@ -1709,6 +1826,12 @@ public class panelTang3 extends JPanel {
 	                return;
 	            }
 	            String maBan = Ban_DAO.getMaBanByTenBan(tableName);
+
+	            // Kiểm tra xem bàn đã được gộp với mainMaBan chưa
+	            if (existingMergedBans.contains(maBan)) {
+	                JOptionPane.showMessageDialog(this, "Bàn " + tableName + " đã được gộp với " + mainTableName + "!");
+	                return;
+	            }
 
 	            // Kiểm tra xem bàn có đang được gộp với bàn chính khác không
 	            String existingMaBanChinh = gopBan_DAO.getMaBanChinh(maBan);
@@ -1727,7 +1850,7 @@ public class panelTang3 extends JPanel {
 	            }
 	            mergedTables.add(tableName);
 	        }
-
+	        
 	        // Xóa chi tiết phiếu đặt bàn trước, sau đó xóa phiếu đặt bàn chính
 	        CTPDB_DAO.deleteCTPhieuDatBanByMaPDB(mainPDB.getMaPDB());
 	        PDB_DAO.deletePhieuDatBanByMaBan(mainMaBan);
@@ -1758,7 +1881,7 @@ public class panelTang3 extends JPanel {
 	        if (mainMaHD == null) {
 	            LocalDateTime ngayLap = LocalDateTime.now();
 	            LocalDateTime ngayXuat = LocalDateTime.now();
-	            hoaDon_DAO.themHD("NV001", maKH, "PTTT01", "VAT01", "KM001", ngayLap, ngayXuat, "Chưa thanh toán");
+	            hoaDon_DAO.themHD("NV001", maKH, "PTTT01", "VAT01", "KM01", ngayLap, ngayXuat, "Chưa thanh toán");
 	            mainMaHD = hoaDon_DAO.getMaHDByMaKHAndStatus(maKH, "Chưa thanh toán");
 	            if (mainMaHD == null) {
 	                JOptionPane.showMessageDialog(this, "Không thể tạo hóa đơn mới!");
@@ -1787,7 +1910,6 @@ public class panelTang3 extends JPanel {
 	                                 PreparedStatement ps = conn.prepareStatement(deleteHDQuery)) {
 	                                ps.setString(1, otherMaHD);
 	                                ps.executeUpdate();
-	                    
 	                            }
 	                        }
 	                    } else if (otherMaKH != null && otherMaKH.equals(maKH)) {
